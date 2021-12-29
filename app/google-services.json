@@ -1,0 +1,188 @@
+{
+  "project_info": {
+    "project_number": "156686169080",
+    "firebase_url": "https://androidcertification.firebaseio.com",
+    "project_id": "androidcertification",
+    "storage_bucket": "androidcertification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156686169080:android:2de1ec6748b98c46b29c0d",
+        "android_client_info": {
+          "package_name": "com.muchbeer.eventscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABBhFt0u6S65GmBgIgRAo8HVQgeOfzPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156686169080:android:9b2c84f00aed7c5a",
+        "android_client_info": {
+          "package_name": "muchbeer.raum.com.gcertnotekeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156686169080-qvi7nt1psuf8ebbb2pfkt9pgn3mddea0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "muchbeer.raum.com.gcertnotekeeper",
+            "certificate_hash": "54c95d232b2a8308b3e51545d300d05fbc43ca13"
+          }
+        },
+        {
+          "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABBhFt0u6S65GmBgIgRAo8HVQgeOfzPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156686169080:android:8eb11714fc27093bb29c0d",
+        "android_client_info": {
+          "package_name": "raum.muchbeer.datacollection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156686169080-t0ng1eq8ji267mrjacp7jnkaraou7lbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "raum.muchbeer.datacollection",
+            "certificate_hash": "d12e2168fc76106088feb0ccd37bd58aad3a77f2"
+          }
+        },
+        {
+          "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABBhFt0u6S65GmBgIgRAo8HVQgeOfzPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156686169080:android:19dbc8f7c1dad5dbb29c0d",
+        "android_client_info": {
+          "package_name": "raum.muchbeer.firestorektx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156686169080-3171nc9akc3rdi5n05budu5bucoeejbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "raum.muchbeer.firestorektx",
+            "certificate_hash": "d12e2168fc76106088feb0ccd37bd58aad3a77f2"
+          }
+        },
+        {
+          "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABBhFt0u6S65GmBgIgRAo8HVQgeOfzPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156686169080:android:c17ee8a52b1937d5b29c0d",
+        "android_client_info": {
+          "package_name": "raum.muchbeer.total"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156686169080-qai576kd16issi0dsuboum7u72lnfh5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "raum.muchbeer.total",
+            "certificate_hash": "d12e2168fc76106088feb0ccd37bd58aad3a77f2"
+          }
+        },
+        {
+          "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABBhFt0u6S65GmBgIgRAo8HVQgeOfzPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156686169080-v5tiurm1fs58sblvum64ji4d8reqpah1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

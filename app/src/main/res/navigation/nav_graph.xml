@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/fragmentCamerax">
+
+    <fragment
+        android:id="@+id/fragmentCameraOne"
+        android:name="com.muchbeer.eventscanner.FragmentCameraOne"
+        android:label="FragmentCameraOne"
+        tools:layout="@layout/fragment_camera_one" />
+    <fragment
+        android:id="@+id/fragmentCamerax"
+        android:name="com.muchbeer.eventscanner.FragmentCamerax"
+        android:label="FragmentCamerax"
+        tools:layout="@layout/fragment_camerax" >
+        <action
+            android:id="@+id/fragmentCamerax_to_fragmentSuccessScan"
+            app:destination="@id/fragmentSuccessScan"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSuccessScan"
+        android:name="com.muchbeer.eventscanner.FragmentSuccessScan"
+        android:label="fragment_success_scan"
+        tools:layout="@layout/fragment_success_scan" >
+        <action
+            android:id="@+id/fragmentSuccessScan_to_fragmentCamerax2"
+            app:destination="@id/fragmentCamerax"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="resultCode"
+            app:argType="string"
+            android:defaultValue="empty" />
+    </fragment>
+</navigation>
