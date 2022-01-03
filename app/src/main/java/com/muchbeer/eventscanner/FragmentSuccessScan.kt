@@ -24,7 +24,8 @@ private lateinit var binding : FragmentSuccessScanBinding
 
         binding.tvResultSuccess.text = resultDisplay.resultCode
         binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+
+            findNavController().navigate(FragmentSuccessScanDirections.fragmentSuccessScanToFragmentCamerax2())
         }
         return binding.root
     }

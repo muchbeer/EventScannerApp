@@ -18,6 +18,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -31,6 +33,7 @@ import pub.devrel.easypermissions.EasyPermissions
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
+    private lateinit var navController  : NavController
 
     private val TAG = MainActivity::class.qualifiedName
 
@@ -38,9 +41,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //  setContentView(R.layout.activity_main)
         binding = MainActivityBinding.inflate(layoutInflater)
+
+        val navHostFrag = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host_fragment) as NavHostFragment
+        navController   = navHostFrag.navController
+
+
         setContentView(binding.root)
     }
 
+    override fun onNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 /*    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).build().show()

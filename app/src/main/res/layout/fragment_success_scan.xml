@@ -10,14 +10,19 @@
     <TextView
         android:id="@+id/tvResultSuccess"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textSize="30dp"
-        android:hint="result"  />
+        android:hint="result"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnBack"
+        android:text="Scan again"
+        android:textColor="@color/black"
+        android:background="#9F9E9E"
         />
 
 </LinearLayout>

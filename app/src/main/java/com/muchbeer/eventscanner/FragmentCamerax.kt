@@ -47,15 +47,29 @@ class FragmentCamerax : Fragment() {
 
         viewModel.progressState.observe(viewLifecycleOwner, {
             binding.scanBarcodeProgressBar.visibility = if(it) View.VISIBLE else View.GONE
+
         })
 
-    /*    lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted {
+            viewModel.scanNewCode.collectLatest {
+                binding.btnScanAgain.visibility = if(it) View.VISIBLE else View.GONE
+            }
+        }
+
+        binding.btnScanAgain.setOnClickListener {
+            binding.apply {
+                btnScanAgain.visibility =  View.GONE
+                tvResult.text = ""
+            }
+
+        }
+       lifecycleScope.launchWhenStarted {
             viewModel.navigation.collectLatest { navDirection->
                 navDirection?.let {
                     findNavController().navigate(it)
                 }
             }
-        }*/
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.codeResultStatee.collectLatest {
@@ -84,6 +98,7 @@ class FragmentCamerax : Fragment() {
     private fun startCamera() {
         // Create an instance of the ProcessCameraProvider,
         // which will be used to bind the use cases to a lifecycle owner.
+        logcat { "Enter the startCamera" }
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         // Add a listener to the cameraProviderFuture.
@@ -108,6 +123,7 @@ class FragmentCamerax : Fragment() {
                     it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode ->
                         if (processingBarcode.compareAndSet(false, true)) {
                             viewModel.searchBarCodeResult(barcode)
+                            logcat { "the code is : ${barcode}" }
 
                         }
                     })
@@ -139,9 +155,7 @@ class FragmentCamerax : Fragment() {
     override fun onResume() {
         super.onResume()
         processingBarcode.set(false)
+        viewModel.triggerScanNext()
     }
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
+
 }

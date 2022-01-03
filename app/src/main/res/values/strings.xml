@@ -2,4 +2,6 @@
     <string name="app_name">EventScanner</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="wifi_details">Wifi name, %1$s! Password is :  %2$s. Thank you.</string>
 </resources>

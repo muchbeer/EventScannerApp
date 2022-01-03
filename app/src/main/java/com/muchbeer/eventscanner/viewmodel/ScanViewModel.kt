@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.muchbeer.eventscanner.FragmentCameraxDirections
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ScanViewModel : ViewModel() {
@@ -17,6 +15,11 @@ class ScanViewModel : ViewModel() {
     private val _progressState = MutableLiveData<Boolean>()
     val progressState : LiveData<Boolean>
             get() = _progressState
+
+    // Backing property to avoid flow emissions from other classes
+    private val _scanNewCode = MutableSharedFlow<Boolean>()
+    val scanNewCode: SharedFlow<Boolean>
+        get() = _scanNewCode.asSharedFlow()
 
     private val _codeResultState = MutableStateFlow<String>("")
     val codeResultStatee : StateFlow<String>
@@ -31,14 +34,20 @@ class ScanViewModel : ViewModel() {
         _progressState.value = false
     }
 
+    fun triggerScanNext() {
+        //alternative please look the documentation and see the best way of using hilt with coroutine
+        viewModelScope.launch {
+            _scanNewCode.emit(false)
+        }
+    }
     fun searchBarCodeResult(barcode : String) {
         _progressState.value = true
             viewModelScope.launch {
                 delay(1000)
                 _codeResultState.value = barcode
-            //    _navigation.emit(FragmentCameraxDirections.fragmentCameraxToFragmentSuccessScan(barcode))
+                _navigation.emit(FragmentCameraxDirections.fragmentCameraxToFragmentSuccessScan(barcode))
                 _progressState.value = false
+                _scanNewCode.emit(true)
             }
-
     }
 }
