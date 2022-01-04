@@ -25,4 +25,22 @@
         android:background="#9F9E9E"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnScanImage"
+        android:textColor="@color/black"
+        android:text="scan Image"
+        />
+
+    <TextView
+        android:id="@+id/tvImageResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:hint="result"
+        android:padding="8dp"
+        android:layout_marginBottom="16dp"/>
+
+
 </LinearLayout>

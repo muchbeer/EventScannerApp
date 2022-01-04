@@ -1,17 +1,22 @@
 package com.muchbeer.eventscanner.util
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
+import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.muchbeer.eventscanner.BarcodeListener
 import com.muchbeer.eventscanner.R
+import logcat.logcat
 
-class BarcodeAnalyzer(private val barcodeListener: BarcodeListener) : ImageAnalysis.Analyzer {
+class BarcodeAnalyzer( private val barcodeListener: BarcodeListener) : ImageAnalysis.Analyzer {
 
 
     val options = BarcodeScannerOptions.Builder()
@@ -27,16 +32,15 @@ class BarcodeAnalyzer(private val barcodeListener: BarcodeListener) : ImageAnaly
         val mediaImage = imageProxy.image
 
         if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+          val  inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             // Pass image to the scanner and have it do its thing
-            scanner.process(image)
+            scanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
                     // Task completed successfully
                     barcodes.forEach {
                       // barcodeListener(it.displayValue!!)
                         scanOption(it)
                     }
-
                 }
                 .addOnFailureListener {
                     // You should really do something about Exceptions
@@ -49,7 +53,9 @@ class BarcodeAnalyzer(private val barcodeListener: BarcodeListener) : ImageAnaly
 
     }
 
-    private fun scanOption(barcode : Barcode) {
+
+
+    private fun scanOption( barcode : Barcode) {
 
         val valueType = barcode.valueType
         // See API reference for complete list of supported types
@@ -84,4 +90,18 @@ class BarcodeAnalyzer(private val barcodeListener: BarcodeListener) : ImageAnaly
 
         }
     }
+
+    fun galleryImageAnalyser(inputImage: InputImage) {
+        logcat { "The input image from BarcodeAnalyzer is: ${inputImage}" }
+        scanner.process(inputImage).addOnSuccessListener { barcodes ->
+            // Task completed successfully
+            barcodes.forEach {
+                 barcodeListener(it.displayValue!!)
+              //  scanOption(it)
+            }
+        }.addOnFailureListener {
+            logcat{ "The exception given is : ${it.message}" }
+        }
+    }
 }
+

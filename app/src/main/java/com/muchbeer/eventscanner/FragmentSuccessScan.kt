@@ -27,6 +27,10 @@ private lateinit var binding : FragmentSuccessScanBinding
 
             findNavController().navigate(FragmentSuccessScanDirections.fragmentSuccessScanToFragmentCamerax2())
         }
+
+        binding.btnScanImage.setOnClickListener {
+
+        }
         return binding.root
     }
 

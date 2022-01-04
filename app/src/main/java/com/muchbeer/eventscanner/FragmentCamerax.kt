@@ -1,13 +1,21 @@
 package com.muchbeer.eventscanner
 
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -16,6 +24,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 import com.muchbeer.eventscanner.databinding.FragmentCameraxBinding
 import com.muchbeer.eventscanner.util.BarcodeAnalyzer
 import com.muchbeer.eventscanner.viewmodel.ScanViewModel
@@ -32,6 +44,10 @@ class FragmentCamerax : Fragment() {
     private var processingBarcode = AtomicBoolean(false)
     private lateinit var cameraExecutor: ExecutorService
 
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var inputImage: InputImage
+    private lateinit var barcodeScanner: BarcodeScanner
+
     private lateinit var viewModel : ScanViewModel
 
     override fun onCreateView(
@@ -44,6 +60,27 @@ class FragmentCamerax : Fragment() {
         viewModel = ViewModelProvider(this).get(ScanViewModel::class.java)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        barcodeScanner = BarcodeScanning.getClient()
+
+        setOption()
+
+        galleryLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {  result : ActivityResult? ->
+            val dataUri = result?.data?.data
+            logcat { "Entered Gallery registerForActivity" }
+            dataUri?.let {
+                logcat { "The uri produced not null is : ${it.path}" }
+                inputImage = InputImage.fromFilePath(requireContext(), it )
+                BarcodeAnalyzer{ receiveBarcode->
+                    logcat { "Successful call the image from gallery" }
+                    viewModel.searchBarCodeResult(receiveBarcode)
+                    logcat { "the code is : ${receiveBarcode}" }
+                }.galleryImageAnalyser(inputImage)
+             //   processQr()
+
+            }
+
+        }
 
         viewModel.progressState.observe(viewLifecycleOwner, {
             binding.scanBarcodeProgressBar.visibility = if(it) View.VISIBLE else View.GONE
@@ -81,18 +118,38 @@ class FragmentCamerax : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestForPermissions.launch(android.Manifest.permission.CAMERA)
+      //  requestForPermissions.launch(android.Manifest.permission.CAMERA)
+        requestForPermissions.launch(
+            arrayOf(android.Manifest.permission.CAMERA,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        )
+
+
     }
 
     private val requestForPermissions =
+
         registerForActivityResult(
-            ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                startCamera()
-            } else {
-                showMessage("Camera Permission is not granted")
+            ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+
+            permissions.entries.forEach {
+                val permissionName = it.key
+                val isGranted = it.value
+
+                if (isGranted) {
+                   // startCamera()
+                   //    showMessage("${permissionName} is Granted")
+                    logcat { "${permissionName} is Granted" }
+                }  else {
+                    showMessage("${permissionName} Permission is not granted")
+                   // logcat { "Permision ${permissionName} not granted" }
+                }
+
             }
+
         }
+
 
 
     private fun startCamera() {
@@ -154,8 +211,81 @@ class FragmentCamerax : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         processingBarcode.set(false)
         viewModel.triggerScanNext()
+    }
+
+    //This needs to be removed
+    private fun processQr() {
+        barcodeScanner.process(inputImage).addOnSuccessListener { barcodeList ->
+            //handle barcode list
+            barcodeList.forEach {
+                val valueType = it.valueType
+                when (valueType) {
+                    Barcode.TYPE_WIFI -> {
+                        val ssid = it.wifi!!.ssid
+                        val password = it.wifi!!.password
+                        val type = it.wifi!!.encryptionType
+
+                        binding.tvResult.text = "ssid is: ${ssid} \npassword is : ${password} \ntype is : ${type}"
+                    }
+                    Barcode.TYPE_URL -> {
+                        val title = it.url!!.title
+                        val url = it.url!!.url
+                        binding.tvResult.text = "title is: ${title} \nurl is : ${url}"
+
+                    }
+                    Barcode.TYPE_TEXT -> {
+                        val text = it.displayValue
+                        binding.tvResult.text = "Your name is : ${text}"
+                    }
+                }
+
+            }
+        }.addOnFailureListener {
+            logcat { "QR error message is : ${it.message}" }
+
+        }
+    }
+
+
+
+    private fun setOption() {
+        val options = arrayOf("camera", "gallery")
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Pick an option")
+        builder.setItems(options)  { dialog, which ->
+            if (which == 0) {
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    startCamera()
+                } else {
+                    showMessage("User turn down please try again ")
+
+                }
+
+            } else {
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    val storageIntent = Intent()
+                    storageIntent.setType("image/*")
+                    storageIntent.setAction(Intent.ACTION_GET_CONTENT)
+                    galleryLauncher.launch(storageIntent)
+                } else {
+                    showMessage("User turned down Please try again")
+                }
+
+            }
+        }
+
+        builder.show()
     }
 
 }
