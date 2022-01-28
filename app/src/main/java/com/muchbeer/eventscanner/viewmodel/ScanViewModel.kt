@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import com.muchbeer.eventscanner.FragmentCameraxDirections
+import com.muchbeer.eventscanner.fragment.FragmentCameraxDirections
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -26,9 +26,13 @@ class ScanViewModel : ViewModel() {
         get() = _codeResultState.asStateFlow()
 
 
-    private val _navigation = MutableStateFlow<NavDirections?>(null)
+    /*private val _navigation = MutableStateFlow<NavDirections?>(null)
     val navigation: StateFlow<NavDirections?>
-                get() = _navigation.asStateFlow()
+                get() = _navigation.asStateFlow()*/
+
+    private val _navigation = MutableLiveData<NavDirections?>(null)
+    val navigation: LiveData<NavDirections?>
+        get() = _navigation
 
     init {
         _progressState.value = false
@@ -45,7 +49,7 @@ class ScanViewModel : ViewModel() {
             viewModelScope.launch {
                 delay(1000)
                 _codeResultState.value = barcode
-                _navigation.emit(FragmentCameraxDirections.fragmentCameraxToFragmentSuccessScan(barcode))
+                _navigation.value = (FragmentCameraxDirections.fragmentCameraxToFragmentSuccessScan(barcode))
                 _progressState.value = false
                 _scanNewCode.emit(true)
             }

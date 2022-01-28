@@ -1,11 +1,10 @@
-package com.muchbeer.eventscanner
+package com.muchbeer.eventscanner.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.muchbeer.eventscanner.databinding.FragmentSuccessScanBinding
@@ -24,12 +23,11 @@ private lateinit var binding : FragmentSuccessScanBinding
 
         binding.tvResultSuccess.text = resultDisplay.resultCode
         binding.btnBack.setOnClickListener {
-
             findNavController().navigate(FragmentSuccessScanDirections.fragmentSuccessScanToFragmentCamerax2())
         }
 
         binding.btnScanImage.setOnClickListener {
-
+            findNavController().navigate(FragmentSuccessScanDirections.fragmentSuccessScanToFragmentGenerate())
         }
         return binding.root
     }

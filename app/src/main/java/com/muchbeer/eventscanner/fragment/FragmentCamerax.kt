@@ -1,12 +1,8 @@
-package com.muchbeer.eventscanner
+package com.muchbeer.eventscanner.fragment
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +22,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import com.muchbeer.eventscanner.databinding.FragmentCameraxBinding
 import com.muchbeer.eventscanner.util.BarcodeAnalyzer
@@ -79,12 +74,10 @@ class FragmentCamerax : Fragment() {
              //   processQr()
 
             }
-
         }
 
         viewModel.progressState.observe(viewLifecycleOwner, {
             binding.scanBarcodeProgressBar.visibility = if(it) View.VISIBLE else View.GONE
-
         })
 
         lifecycleScope.launchWhenStarted {
@@ -100,18 +93,28 @@ class FragmentCamerax : Fragment() {
             }
 
         }
-       lifecycleScope.launchWhenStarted {
+
+        viewModel.navigation.observe(viewLifecycleOwner) { navDirection ->
+            navDirection?.let {
+                findNavController().navigate(it)
+            }
+        }
+   /*    lifecycleScope.launchWhenStarted {
             viewModel.navigation.collectLatest { navDirection->
                 navDirection?.let {
                     findNavController().navigate(it)
                 }
             }
-        }
+        }*/
 
         lifecycleScope.launchWhenStarted {
             viewModel.codeResultStatee.collectLatest {
                 binding.tvResult.text = it
             }
+        }
+
+        binding.btnCreateQ.setOnClickListener {
+           findNavController().navigate(FragmentCameraxDirections.fragmentCameraxToFragmentCreateQr())
         }
         return binding.root
     }
@@ -129,7 +132,6 @@ class FragmentCamerax : Fragment() {
     }
 
     private val requestForPermissions =
-
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
 
@@ -216,40 +218,6 @@ class FragmentCamerax : Fragment() {
         viewModel.triggerScanNext()
     }
 
-    //This needs to be removed
-    private fun processQr() {
-        barcodeScanner.process(inputImage).addOnSuccessListener { barcodeList ->
-            //handle barcode list
-            barcodeList.forEach {
-                val valueType = it.valueType
-                when (valueType) {
-                    Barcode.TYPE_WIFI -> {
-                        val ssid = it.wifi!!.ssid
-                        val password = it.wifi!!.password
-                        val type = it.wifi!!.encryptionType
-
-                        binding.tvResult.text = "ssid is: ${ssid} \npassword is : ${password} \ntype is : ${type}"
-                    }
-                    Barcode.TYPE_URL -> {
-                        val title = it.url!!.title
-                        val url = it.url!!.url
-                        binding.tvResult.text = "title is: ${title} \nurl is : ${url}"
-
-                    }
-                    Barcode.TYPE_TEXT -> {
-                        val text = it.displayValue
-                        binding.tvResult.text = "Your name is : ${text}"
-                    }
-                }
-
-            }
-        }.addOnFailureListener {
-            logcat { "QR error message is : ${it.message}" }
-
-        }
-    }
-
-
 
     private fun setOption() {
         val options = arrayOf("camera", "gallery")
@@ -284,7 +252,6 @@ class FragmentCamerax : Fragment() {
 
             }
         }
-
         builder.show()
     }
 

@@ -1,18 +1,14 @@
 package com.muchbeer.eventscanner.util
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
-import androidx.activity.result.ActivityResultLauncher
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import com.muchbeer.eventscanner.BarcodeListener
+import com.muchbeer.eventscanner.fragment.BarcodeListener
 import com.muchbeer.eventscanner.R
 import logcat.logcat
 
@@ -81,13 +77,13 @@ class BarcodeAnalyzer( private val barcodeListener: BarcodeListener) : ImageAnal
 
             Barcode.TYPE_PHONE -> {
                 val phone_number = barcode.phone
+                barcodeListener("The phone is ${phone_number}")
             }
 
             Barcode.TYPE_PRODUCT -> {
                 val product_name = barcode.displayValue
                 barcodeListener("The text is : ${product_name}")
             }
-
         }
     }
 

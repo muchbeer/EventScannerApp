@@ -1,4 +1,4 @@
-package com.muchbeer.eventscanner
+package com.muchbeer.eventscanner.fragment
 
 import android.Manifest
 import android.content.DialogInterface

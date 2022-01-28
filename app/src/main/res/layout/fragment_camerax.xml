@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnScanAgain"/>
+        app:layout_constraintBottom_toTopOf="@id/layoutButton"/>
 
     <ProgressBar
         android:id="@+id/scan_barcode_progress_bar"
@@ -27,16 +27,37 @@
         app:layout_constraintStart_toStartOf="@+id/scan_barcode_preview_view"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnScanAgain"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layoutButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Scan"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@id/tvResult"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvResult" />
+        android:orientation="horizontal"
+
+        app:layout_constraintBottom_toTopOf="@id/tvResult"
+        app:layout_constraintStart_toStartOf="@+id/tvResult">
+        <Button
+            android:id="@+id/btnScanAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="30dp"
+            android:layout_weight="1"
+            android:text="Scan QR"
+            android:textSize="20dp"
+            />
+
+        <Button
+            android:id="@+id/btnCreateQ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="30dp"
+            android:text="Create QR"
+            android:layout_marginEnd="30dp"
+            />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvResult"
