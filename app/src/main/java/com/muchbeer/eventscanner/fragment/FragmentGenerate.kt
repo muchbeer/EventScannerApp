@@ -35,9 +35,7 @@ class FragmentGenerate : Fragment() {
             val barcodeEncoder = BarcodeEncoder()
             val bitmap = barcodeEncoder.encodeBitmap(inputText, BarcodeFormat.QR_CODE, 400, 400)
             binding.imgGenerator.setImageBitmap(bitmap)
-        } catch (e: Exception) {
+         } catch (e: Exception) {
         }
-
     }
-
 }
